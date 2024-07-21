@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Information about user</title>
+</head>
+<body>
+
+
+<h2> Welcome, <span th:text = "${helloUser}">username</span></h2>
+
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>FIRSTNAME</th>
+        <th>LASTNAME</th>
+        <th>EMAIL</th>
+        <th>PASSWORD</th>
+        <th>ROLE</th>
+
+    </tr>
+<tr>
+        <td th:text="${userId}"/>
+        <td th:text="${userFirstName}"/>
+        <td th:text="${userLastName}"/>
+        <td th:text="${userEmail}"/>
+        <td th:text="${UserPassword}"/>
+        <td th:text="${userRole}"/>
+    </tr>
+</table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form th:method="POST" th:action="@{/logout}">
+        <input type="submit" value="Logout"/>
+    </form>
+
+</body>
+</html>

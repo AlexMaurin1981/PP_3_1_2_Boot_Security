@@ -1,12 +1,11 @@
 package ru.kata.spring.boot_security.demo.enteties;
 
-
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User{
+public class User  {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,23 +23,11 @@ public class User{
    private String email;
 
 
-   public Collection<Role> getRoles() {
-      return roles;
-   }
-
-
-   @ManyToMany(fetch = FetchType.LAZY)
-   @JoinTable(name = "users_roles",
-           joinColumns = @JoinColumn(name = "user_id"),
-           inverseJoinColumns = @JoinColumn(name = "role_id")
-   )
-
-   private Collection<Role> roles;
+   @ManyToMany(fetch = FetchType.EAGER)
+   private Set<Role> roles;
 
    public User() {
    }
-
-
 
    public Long getId() {
       return id;
@@ -90,23 +77,19 @@ public class User{
       this.email = email;
    }
 
-   public void setRoles(Collection<Role> roles) {
-      this.roles = roles;
-   }
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-   @Override
-   public String toString() {
-      return "User{" +
-              "id=" + id +
-              ", username='" + username + '\'' +
-              ", password='" + password + '\'' +
-              ", firstName='" + firstName + '\'' +
-              ", lastName='" + lastName + '\'' +
-              ", email='" + email + '\'' +
-              ", roles=" + roles +
-              '}';
-   }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }
+
+
+
+
+
 
 
 
