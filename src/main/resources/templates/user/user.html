@@ -13,6 +13,7 @@
 <table class="table table-striped">
     <tr>
         <th>ID</th>
+        <th>USERNAME</th>
         <th>FIRSTNAME</th>
         <th>LASTNAME</th>
         <th>EMAIL</th>
@@ -21,13 +22,14 @@
 
     </tr>
 <tr>
-        <td th:text="${userId}"/>
-        <td th:text="${userFirstName}"/>
-        <td th:text="${userLastName}"/>
-        <td th:text="${userEmail}"/>
-        <td th:text="${UserPassword}"/>
-        <td th:text="${userRole}"/>
-    </tr>
+    <tr th:each="user : ${user}">
+        <td th:text="${user.getId()}"/>
+        <td th:text="${user.getUsername()}"/>
+        <td th:text="${user.getFirstName()}"/>
+        <td th:text="${user.getLastName()}"/>
+        <td th:text="${user.getEmail()}"/>
+        <td th:text="${user.getPassword()}"/>
+    <td th:each= "user :${user.getRoles()}" th:text="${user.toString()}"></td>
 </table>
     <br>
     <br>

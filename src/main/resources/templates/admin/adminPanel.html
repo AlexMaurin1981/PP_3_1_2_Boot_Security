@@ -27,7 +27,7 @@
         <td th:text="${users.username}"/>
         <td th:text="${users.password}"/>
         <td th:text="${users.email}"/>
-        <td th:text="${users.roles}"/>
+    <td th:each= "role :${users.getRoles()}" th:text="${role.toString()}"></td>
 
 
         <td>

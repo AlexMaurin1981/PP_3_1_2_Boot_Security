@@ -14,9 +14,7 @@ import ru.kata.spring.boot_security.demo.reposotories.RoleRepository;
 import ru.kata.spring.boot_security.demo.reposotories.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
         User user = findByUsername(username);
         if (user == null)
             throw new UsernameNotFoundException(String.format(" User '%s' not found", username));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
@@ -57,18 +55,20 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByUsername(userName);
     }
+
     @Override
     @Transactional
     public void saveUser(User user) {
-        if (user.getId()!=null && userRepository.findById(user.getId()).isPresent()) {
+        if (user.getId() != null && userRepository.findById(user.getId()).isPresent()) {
             throw new UsernameNotFoundException(String.format("Пользователь с ID '%s' уже существует. Сохранение невозможно", user.getUsername()));
         }
-        user.setRoles(Collections.singleton(new Role(1l, "ROLE_USER")));
-        user.setRoles(Collections.singleton(new Role(2l, "ROLE_ADMIN")));
+        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
     }
+
     @Override
     @Transactional
     public User getUserById(Long id) {
@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
@@ -87,8 +88,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(updateUser.getId()).orElse(new User());
         user.setFirstName(updateUser.getFirstName());
         user.setLastName(updateUser.getLastName());
+        user.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
         user.setEmail(updateUser.getEmail());
         user.setRoles(updateUser.getRoles());
+        ;
         userRepository.save(user);
 
     }

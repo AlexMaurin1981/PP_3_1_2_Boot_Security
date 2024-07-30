@@ -8,25 +8,16 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table (name = "role")
+@Table (name = "roles")
 public class Role implements GrantedAuthority {
  @Id
  private Long id;
+ @Column (name = "name_role")
  private String nameRole;
 @ManyToMany (mappedBy = "roles")
-
  private Set<User> users;
 
- public Set<User> getUsers() {
-  return users;
- }
-
- public void setUsers(Set<User> users) {
-  this.users = users;
- }
-
  public Role() {
-
  }
 
  public Role(Long id) {
@@ -54,23 +45,22 @@ public class Role implements GrantedAuthority {
   this.nameRole = nameRole;
  }
 
- public Set<User> getUserSet() {
+ public Set<User> getUsers() {
   return users;
  }
 
- public void setUserSet(Set<User> userSet) {
+ public void setUsers(Set<User> users) {
   this.users = users;
  }
 
-
  @Override
  public String getAuthority() {
-  return nameRole;
+  return getNameRole();
  }
 
  @Override
  public String toString() {
-  return this.nameRole;
+  return nameRole.substring(5)+" ";
  }
 }
 
