@@ -6,11 +6,5 @@ import java.util.Collection;
 public interface RoleService {
     Collection<Role> listRoles();
 
-    void addRole(Role role);
-
-    void updateRole(Role role);
-
-    void deleteRole(Role role);
-
 
 }

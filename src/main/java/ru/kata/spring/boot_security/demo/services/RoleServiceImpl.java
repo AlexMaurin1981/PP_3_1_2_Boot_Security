@@ -10,7 +10,7 @@ import java.util.Collection;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private RoleRepository roleRepository;
+    final private RoleRepository roleRepository;
 
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
@@ -21,18 +21,4 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findAll();
     }
 
-    @Override
-    public void addRole(Role role) {
-        roleRepository.save(role);
-    }
-
-    @Override
-    public void updateRole(Role role) {
-        roleRepository.save(role);
-    }
-
-    @Override
-    public void deleteRole(Role role) {
-        roleRepository.delete(role);
-    }
 }

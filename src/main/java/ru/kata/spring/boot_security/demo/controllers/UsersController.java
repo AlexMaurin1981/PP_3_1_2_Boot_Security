@@ -16,12 +16,10 @@ import java.security.Principal;
 @RequestMapping("/user")
 public class UsersController {
 
-    private RoleService roleService;
-    final UserService userService;
+    final private UserService userService;
 
     @Autowired
-    public UsersController(RoleService roleService, UserService userService) {
-        this.roleService = roleService;
+    public UsersController(UserService userService) {
         this.userService = userService;
     }
 
