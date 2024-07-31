@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,17 +11,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import ru.kata.spring.boot_security.demo.services.UserService;
-    @EnableWebSecurity
+import ru.kata.spring.boot_security.demo.services.UserDetailsServiceImpl;
+
+import javax.security.sasl.AuthenticationException;
+
+@EnableWebSecurity
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final SuccessUserHandler successUserHandler;
-        private final UserService userService;
 
+        private  final UserDetailsServiceImpl userDetailsService;
         @Autowired
-        public WebSecurityConfig(SuccessUserHandler successUserHandler, @Lazy UserService userService) {
+        public WebSecurityConfig(SuccessUserHandler successUserHandler,UserDetailsServiceImpl userDetailsService) {
             this.successUserHandler = successUserHandler;
-            this.userService = userService;
+
+            this.userDetailsService = userDetailsService;
         }
 
     @Override
@@ -44,7 +47,11 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(daoAuthenticationProvider());
+          try {
+              auth.authenticationProvider(daoAuthenticationProvider());
+          } catch (Exception e) {
+           throw new AuthenticationException("Failed to configure authentication provider",e);
+          }
         }
 
         @Bean
@@ -56,7 +63,7 @@ import ru.kata.spring.boot_security.demo.services.UserService;
     DaoAuthenticationProvider daoAuthenticationProvider (){
         DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
         daoAuthentication.setPasswordEncoder(bCryptPasswordEncoder());
-        daoAuthentication.setUserDetailsService(userService);
+        daoAuthentication.setUserDetailsService(userDetailsService);
         return daoAuthentication;
     }
 }
