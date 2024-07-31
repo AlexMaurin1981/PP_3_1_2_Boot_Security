@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.enteties.User;
 import ru.kata.spring.boot_security.demo.reposotories.UserRepository;
 
 
+import javax.swing.*;
 import java.util.*;
 
 @Service
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -52,19 +53,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User updateUser) {
-        User user = userRepository.findById(updateUser.getId()).orElse(new User());
+        User user = userRepository.findById(updateUser.getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
         String currentPassword = user.getPassword();
         String newPassword = updateUser.getPassword();
-
         if (!currentPassword.equals(newPassword)) {
             updateUser.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
         }
-
-        user.setFirstName(updateUser.getFirstName());
-        user.setLastName(updateUser.getLastName());
-        user.setEmail(updateUser.getEmail());
-        user.setRoles(updateUser.getRoles());
-        userRepository.save(user);
+        userRepository.save(updateUser);
     }
 
     @Override
