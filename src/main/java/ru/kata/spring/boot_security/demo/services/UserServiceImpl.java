@@ -10,7 +10,6 @@ import ru.kata.spring.boot_security.demo.enteties.User;
 import ru.kata.spring.boot_security.demo.reposotories.UserRepository;
 
 
-import javax.swing.*;
 import java.util.*;
 
 @Service
