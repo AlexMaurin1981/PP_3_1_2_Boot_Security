@@ -40,10 +40,6 @@ import ru.kata.spring.boot_security.demo.services.UserService;
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login");
-
-
-
-
     }
 
         @Override
@@ -55,7 +51,6 @@ import ru.kata.spring.boot_security.demo.services.UserService;
         public BCryptPasswordEncoder bCryptPasswordEncoder() {
             return new BCryptPasswordEncoder();
         }
-
 
         @Bean
     DaoAuthenticationProvider daoAuthenticationProvider (){

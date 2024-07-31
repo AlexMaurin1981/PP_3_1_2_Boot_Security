@@ -44,23 +44,19 @@ public class AdminController {
 
     @PostMapping("/deleteUser")
     public String deleteUser (@RequestParam("id") long id){
-
        userService.deleteUserById(id);
         return "redirect:/admin";
     }
+
     @GetMapping ("/updateUser")
     public String  update(@RequestParam ("id") long id,Model model) {
         model.addAttribute("user", userService.getUserById(id));
-       //model.addAttribute("role", roleService.listRoles().);
         return "admin/updateuser";
     }
 
         @PostMapping("/update")
-
         public String save (@ModelAttribute("user") User user){
-
             userService.updateUser(user);
-
             return "redirect:/admin";
         }
 }

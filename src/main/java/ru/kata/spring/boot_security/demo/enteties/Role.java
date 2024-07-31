@@ -1,21 +1,19 @@
 package ru.kata.spring.boot_security.demo.enteties;
 
-
-
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table (name = "roles")
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
  @Id
  private Long id;
- @Column (name = "name_role")
+ @Column(name = "name_role")
  private String nameRole;
  @Column(name = "users")
-@ManyToMany (mappedBy = "roles")
+ @ManyToMany(mappedBy = "roles")
  private Set<User> users;
 
  public Role() {
@@ -61,7 +59,8 @@ public class Role implements GrantedAuthority {
 
  @Override
  public String toString() {
-  return nameRole.substring(5)+" ";
+  return nameRole.substring(5) + " ";
  }
+
 }
 

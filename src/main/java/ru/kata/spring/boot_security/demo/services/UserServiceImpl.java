@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -38,7 +37,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
         if (user == null)
@@ -51,30 +49,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public User getUserByUserName(String userName) {
-
         return userRepository.findByUsername(userName);
     }
 
     @Override
     @Transactional
     public void saveUser(User user) {
-        if (user.getId() != null && userRepository.findById(user.getId()).isPresent()) {
-            throw new UsernameNotFoundException(String.format("Пользователь с ID '%s' уже существует. Сохранение невозможно", user.getUsername()));
-        }
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
     }
 
     @Override
-
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(new User());
-
     }
 
     @Override
@@ -92,16 +81,12 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
         user.setEmail(updateUser.getEmail());
         user.setRoles(updateUser.getRoles());
-        ;
         userRepository.save(user);
-
     }
 
     @Override
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
 
 }

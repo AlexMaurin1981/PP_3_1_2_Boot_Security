@@ -30,7 +30,6 @@ public class User implements UserDetails {
    @Column(name = "email")
    private String email;
 
-
    @ManyToMany(fetch = FetchType.LAZY)
    @LazyCollection(LazyCollectionOption.EXTRA)
    @Fetch(FetchMode.JOIN)
@@ -38,6 +37,7 @@ public class User implements UserDetails {
 
    public User() {
    }
+
    public User(String firstName, String lastName, String email) {
       this.firstName = firstName;
       this.lastName = lastName;
@@ -52,7 +52,6 @@ public class User implements UserDetails {
       this.email = email;
       this.roles = roles;
    }
-
 
    public Long getId() {
       return id;
@@ -102,17 +101,17 @@ public class User implements UserDetails {
       this.roles = roles;
    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+   @Override
+   public String toString() {
+      return "User{" +
+              "id=" + id +
+              ", firstName='" + firstName + '\'' +
+              ", lastName='" + lastName + '\'' +
+              ", email='" + email + '\'' +
+              '}';
+   }
 
-    @Override
+   @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
       return getRoles();
    }
