@@ -31,7 +31,7 @@ public class UsersController {
         User user = userService.getUserByUserName(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("helloUser",principal.getName());
-    //    model.addAttribute("userRole", user.getRoles());
+
 
         return "user/user";
     }

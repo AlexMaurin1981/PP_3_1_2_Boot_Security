@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional (readOnly = true)
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
         if (user == null)
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+
     public User getUserByUserName(String userName) {
 
         return userRepository.findByUsername(userName);
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(new User());
 
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional (readOnly = true)
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

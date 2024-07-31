@@ -1,5 +1,9 @@
 package ru.kata.spring.boot_security.demo.enteties;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,7 +31,9 @@ public class User implements UserDetails {
    private String email;
 
 
-   @ManyToMany(fetch = FetchType.EAGER)
+   @ManyToMany(fetch = FetchType.LAZY)
+   @LazyCollection(LazyCollectionOption.EXTRA)
+   @Fetch(FetchMode.JOIN)
    private Set<Role> roles;
 
    public User() {
