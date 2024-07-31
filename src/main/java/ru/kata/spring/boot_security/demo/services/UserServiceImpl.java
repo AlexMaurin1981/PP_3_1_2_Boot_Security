@@ -21,11 +21,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -73,6 +75,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(User updateUser) {
         User user = userRepository.findById(updateUser.getId()).orElse(new User());
+        String currentPassword = user.getPassword();
+        String newPassword = updateUser.getPassword();
+
+        if (!currentPassword.equals(newPassword)) {
+            updateUser.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
+        }
+
         user.setFirstName(updateUser.getFirstName());
         user.setLastName(updateUser.getLastName());
         user.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
