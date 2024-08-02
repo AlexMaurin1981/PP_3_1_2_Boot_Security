@@ -55,9 +55,10 @@ import javax.security.sasl.AuthenticationException;
         }
 
         @Bean
-        public BCryptPasswordEncoder bCryptPasswordEncoder() {
+       public BCryptPasswordEncoder bCryptPasswordEncoder() {
             return new BCryptPasswordEncoder();
         }
+
 
         @Bean
     DaoAuthenticationProvider daoAuthenticationProvider (){

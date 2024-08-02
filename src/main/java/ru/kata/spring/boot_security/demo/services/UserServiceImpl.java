@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +19,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
     }
 
     @Override
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService {
         String currentPassword = user.getPassword();
         String newPassword = updateUser.getPassword();
         if (!currentPassword.equals(newPassword)) {
-            updateUser.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
+            updateUser.setPassword((new BCryptPasswordEncoder().encode(updateUser.getPassword())));
         }
         userRepository.save(updateUser);
     }
