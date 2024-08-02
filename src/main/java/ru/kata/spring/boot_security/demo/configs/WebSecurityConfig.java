@@ -10,8 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import ru.kata.spring.boot_security.demo.services.UserDetailsServiceImpl;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.security.sasl.AuthenticationException;
 
@@ -19,13 +18,14 @@ import javax.security.sasl.AuthenticationException;
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final SuccessUserHandler successUserHandler;
+        private final UserService userService;
 
-        private  final UserDetailsServiceImpl userDetailsService;
         @Autowired
-        public WebSecurityConfig(SuccessUserHandler successUserHandler,UserDetailsServiceImpl userDetailsService) {
+        public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
             this.successUserHandler = successUserHandler;
 
-            this.userDetailsService = userDetailsService;
+
+            this.userService = userService;
         }
 
     @Override
@@ -64,7 +64,7 @@ import javax.security.sasl.AuthenticationException;
     DaoAuthenticationProvider daoAuthenticationProvider (){
         DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
         daoAuthentication.setPasswordEncoder(bCryptPasswordEncoder());
-        daoAuthentication.setUserDetailsService(userDetailsService);
+        daoAuthentication.setUserDetailsService(userService);
         return daoAuthentication;
     }
 }
