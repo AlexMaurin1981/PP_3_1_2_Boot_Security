@@ -20,13 +20,14 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final BCryptpasswordImpl bCryptpasswordImpl;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptpasswordImpl bCryptpasswordImpl) {
         this.userRepository = userRepository;
 
+        this.bCryptpasswordImpl = bCryptpasswordImpl;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(bCryptpasswordImpl.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
         String currentPassword = user.getPassword();
         String newPassword = updateUser.getPassword();
         if (!currentPassword.equals(newPassword)) {
-            updateUser.setPassword((new BCryptPasswordEncoder().encode(updateUser.getPassword())));
+            updateUser.setPassword((bCryptpasswordImpl.encode(updateUser.getPassword())));
         }
         userRepository.save(updateUser);
     }
