@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import ru.kata.spring.boot_security.demo.services.BCryptpasswordImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.security.sasl.AuthenticationException;
@@ -19,15 +19,16 @@ import javax.security.sasl.AuthenticationException;
 
         private final SuccessUserHandler successUserHandler;
         private final UserService userService;
-        private final BCryptpasswordImpl bCryptpasswordImpl;
+        private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
         @Autowired
-        public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, BCryptpasswordImpl bCryptpasswordImpl) {
+        public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
             this.successUserHandler = successUserHandler;
 
 
             this.userService = userService;
-            this.bCryptpasswordImpl = bCryptpasswordImpl;
+            this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
         }
 
     @Override
@@ -59,7 +60,7 @@ import javax.security.sasl.AuthenticationException;
         @Bean
     DaoAuthenticationProvider daoAuthenticationProvider (){
         DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
-        daoAuthentication.setPasswordEncoder(bCryptpasswordImpl);
+        daoAuthentication.setPasswordEncoder(bCryptPasswordEncoder);
         daoAuthentication.setUserDetailsService(userService);
         return daoAuthentication;
     }

@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.configs.BCryptpasswordImpl;
 import ru.kata.spring.boot_security.demo.enteties.Role;
 import ru.kata.spring.boot_security.demo.enteties.User;
 import ru.kata.spring.boot_security.demo.reposotories.UserRepository;
@@ -19,14 +21,15 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptpasswordImpl bCryptpasswordImpl;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptpasswordImpl bCryptpasswordImpl) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 
-        this.bCryptpasswordImpl = bCryptpasswordImpl;
+
     }
 
     @Override
@@ -38,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(bCryptpasswordImpl.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -60,7 +63,7 @@ public class UserServiceImpl implements UserService {
         String currentPassword = user.getPassword();
         String newPassword = updateUser.getPassword();
         if (!currentPassword.equals(newPassword)) {
-            updateUser.setPassword((bCryptpasswordImpl.encode(updateUser.getPassword())));
+            updateUser.setPassword((bCryptPasswordEncoder.encode(updateUser.getPassword())));
         }
         userRepository.save(updateUser);
     }
